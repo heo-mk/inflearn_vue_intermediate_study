@@ -1,9 +1,10 @@
 <template>
   <div>
     <ul>
-      <li v-for="(todoItem, index) in todoItems" v-bind:key="todoItem" class="shadow`">
-        <i class="fas fa-check checkBtn" v-on:click="toggleComplete"></i>
-        {{ todoItem }}
+      <li v-for="(todoItem, index) in propsdata" v-bind:key="todoItem.item" class="shadow">
+        <i class="fas fa-check checkBtn" v-bind:class="{checkBtnCompleted: todoItem.completed}" 
+          v-on:click="toggleComplete(todoItem, index)"></i>
+        <span v-bind:class="{textCompleted : todoItem.completed}">{{ todoItem.item }}</span>
         <!-- <button v-on:click="removeTodo">delete</button> -->
         <span class="removeBtn" v-on:click="removeTodo(todoItem, index)">
           <i class="fas fa-trash"></i>
@@ -15,35 +16,40 @@
 
 <script>
   export default {
-    data: function() {
-      return {
-        todoItems: [],
-      }
-    },
+    // data: function() {
+    //   return {
+    //     todoItems: [],
+    //   }
+    // },
+    props: ['propsdata'],
     methods: {
       removeTodo: function(todoItem, index) {
         console.log(todoItem, index);
         localStorage.removeItem(todoItem);
         this.todoItems.splice(index, 1);
       },
-      toggleComplete: function() {
-
+      toggleComplete: function(todoItem) {
+        // completed값 바꿔줌
+        todoItem.completed = !todoItem.completed;
+        // localStorage에 데이터 갱신하는 부분
+        localStorage.removeItem(todoItem.item);
+        localStorage.setItem(todoItem.item, JSON.stringify(todoItem));
       }
     },
-    created: function() {
-      // console.log("created");
-      if (localStorage.length > 0) {
-        for (let i = 0; i < localStorage.length; i++) {
-          // console.log(localStorage.key(i))
-          if (localStorage.key(i) !== "loglevel:webpack-dev-server") {
-            // this.todoItems.push(localStorage.key(i))
-            // localStorage.getItem(localStorage.key(i));
-            // console.log(JSON.parse(localStorage.getItem(localStorage.key(i))));
-            this.todoItems.push(JSON.parse(localStorage.getItem(localStorage.key(i))));
-          }
-        }
-      }
-    }
+    // created: function() {
+    //   // console.log("created");
+    //   if (localStorage.length > 0) {
+    //     for (let i = 0; i < localStorage.length; i++) {
+    //       // console.log(localStorage.key(i))
+    //       if (localStorage.key(i) !== "loglevel:webpack-dev-server") {
+    //         // this.todoItems.push(localStorage.key(i))
+    //         // localStorage.getItem(localStorage.key(i));
+    //         // console.log(JSON.parse(localStorage.getItem(localStorage.key(i))));
+    //         this.todoItems.push(JSON.parse(localStorage.getItem(localStorage.key(i))));
+    //       }
+    //     }
+    //   }
+    // }
   }
 </script>
 
@@ -75,5 +81,9 @@ li {
 .removeBtn {
   margin-left: auto;
   color: #de4343;
+}
+.textCompleted {
+  text-decoration: line-through;
+  color: #b3adad;
 }
 </style>

@@ -19,13 +19,15 @@
       addTodo: function() {
         // console.log(this.newTodoItem);
         if (this.newTodoItem !== '') {
-          let obj = {
-            completed: false,
-            item: this.newTodoItem,
-          };
-          // 저장하는 로직
-          // localStorage.setItem(this.newTodoItem, obj);
-          localStorage.setItem(this.newTodoItem, JSON.stringify(obj));
+          // let obj = {
+          //   completed: false,
+          //   item: this.newTodoItem,
+          // };
+          // // 저장하는 로직
+          // // localStorage.setItem(this.newTodoItem, obj);
+          // localStorage.setItem(this.newTodoItem, JSON.stringify(obj));
+          // this.$emit('이벤트 이름', 인자1, 인자2, ...)
+          this.$emit('addTodoItem', this.newTodoItem);
           this.clearInput();
         }
       },
