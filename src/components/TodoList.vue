@@ -15,7 +15,7 @@
 </template>
 
 <script>
-  export default {
+  export default {  
     // data: function() {
     //   return {
     //     todoItems: [],
@@ -24,16 +24,10 @@
     props: ['propsdata'],
     methods: {
       removeTodo: function(todoItem, index) {
-        console.log(todoItem, index);
-        localStorage.removeItem(todoItem);
-        this.todoItems.splice(index, 1);
+        this.$emit('removeItem', todoItem, index);
       },
-      toggleComplete: function(todoItem) {
-        // completed값 바꿔줌
-        todoItem.completed = !todoItem.completed;
-        // localStorage에 데이터 갱신하는 부분
-        localStorage.removeItem(todoItem.item);
-        localStorage.setItem(todoItem.item, JSON.stringify(todoItem));
+      toggleComplete: function(todoItem, index) {
+        this.$emit('toggleItem', todoItem, index);
       }
     },
     // created: function() {
